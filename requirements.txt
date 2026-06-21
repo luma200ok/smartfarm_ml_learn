@@ -1,0 +1,19 @@
+# Phase 1 — ML (정형 데이터 분석/분류)
+pandas
+numpy
+scikit-learn==1.7.2   # .pkl 모델 저장 버전 고정 (배포 시 로딩 호환)
+xgboost
+matplotlib
+seaborn
+ipykernel
+
+# Streamlit 데모 (전 단계 배포)
+streamlit
+
+# --- Phase 2 — DL (새 세션에서 주석 해제) ---
+# torch
+# torchvision
+
+# --- Phase 3 — LLM (새 세션에서 주석 해제) ---
+# anthropic
+# python-dotenv
