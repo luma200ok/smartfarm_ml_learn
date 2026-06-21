@@ -89,6 +89,25 @@ def main():
     st.title("🌱 스마트팜 작물 추천")
     st.caption("토양·환경 값으로 적합 작물 추천 + 모델 평가 (RandomForest 99.5%)")
 
+    # 탭이 너무 작아서 안 보임 → 크고 굵게 + 선택 탭 강조 (CSS 주입)
+    st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab-list"] { gap: 12px; }
+    .stTabs [data-baseweb="tab"] {
+        font-size: 1.25rem;
+        font-weight: 700;
+        padding: 12px 28px;
+        background-color: #F1F8E9;
+        color: #2E5A1C;                 /* 연두 배경에 진초록 글자 (다크 테마서도 보이게 고정) */
+        border-radius: 10px 10px 0 0;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #4C9A2A;
+        color: white !important;        /* 선택 탭: 진초록 배경 + 흰 글자 */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     bundle = load_bundle()
     model, scaler, le = bundle["model"], bundle["scaler"], bundle["le"]
 
