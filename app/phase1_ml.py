@@ -39,8 +39,8 @@ def load_bundle():
     return joblib.load(MODEL_PATH)
 
 
-def predict_ui(model, scaler, le):
-    """탭1 — 환경값 입력 → 작물 추천"""
+def predict_ui(model, scaler, le, prof_mean):
+    """탭1 — 환경값 입력 → 작물 추천 (+ 추천 이유)"""
     st.subheader("환경값 입력")
     cols = st.columns(2)
     values = []
@@ -67,9 +67,40 @@ def predict_ui(model, scaler, le):
             name_en = le.classes_[idx]
             st.write(f"- {ko_crop(name_en)} ({name_en}) : {proba[idx]:.1%}")
 
+        # 추천 이유: 내 입력 vs 추천 작물 '전형값' 비교
+        st.subheader(f"💡 왜 {ko_crop(crop_en)}? — 내 입력 vs {ko_crop(crop_en)} 평균 환경")
+        typical = prof_mean.loc[crop_en]
+        cmp = pd.DataFrame(
+            {"내 입력": values,
+             f"{ko_crop(crop_en)} 평균": [typical[k] for k in RANGES.keys()]},
+            index=[FEATURE_KO[k] for k in RANGES.keys()],
+        )
+        st.table(cmp)
+        st.caption("두 값이 비슷할수록 그 작물에 알맞은 환경입니다.")
+
+
+def guide_ui(le, prof_mean, prof_min, prof_max):
+    """탭2 — 작물별 적합 환경 가이드 (작물 → 환경값)"""
+    st.subheader("🌾 작물별 적합 환경 가이드")
+    st.caption("작물을 고르면 그 작물이 잘 자라는 환경값(평균·범위)을 보여줍니다.")
+
+    ko2en = {ko_crop(en): en for en in le.classes_}
+    sel_ko = st.selectbox("작물 선택", sorted(ko2en.keys()))
+    en = ko2en[sel_ko]
+
+    tbl = pd.DataFrame(
+        {"평균": [prof_mean.loc[en, k] for k in RANGES.keys()],
+         "최소": [prof_min.loc[en, k] for k in RANGES.keys()],
+         "최대": [prof_max.loc[en, k] for k in RANGES.keys()]},
+        index=[FEATURE_KO[k] for k in RANGES.keys()],
+    )
+    st.table(tbl)
+    st.caption(f"예: {sel_ko}는 강수량 평균 {prof_mean.loc[en, 'rainfall']:.0f}mm, "
+               f"습도 {prof_mean.loc[en, 'humidity']:.0f}% 환경을 좋아합니다.")
+
 
 def eval_ui():
-    """탭2 — 모델 학습 결과 (1-5~1-7에서 만든 그림 불러와 표시)"""
+    """탭3 — 모델 학습 결과 (1-5~1-7에서 만든 그림 불러와 표시)"""
     st.subheader("세 모델 정확도 비교")
     st.table(pd.DataFrame({
         "모델": ["RandomForest 🏆", "XGBoost", "LogisticRegression"],
@@ -110,10 +141,14 @@ def main():
 
     bundle = load_bundle()
     model, scaler, le = bundle["model"], bundle["scaler"], bundle["le"]
+    prof_mean, prof_min, prof_max = bundle["prof_mean"], bundle["prof_min"], bundle["prof_max"]
 
-    tab_predict, tab_eval = st.tabs(["🔮 예측하기", "📊 모델 평가·비교"])
+    tab_predict, tab_guide, tab_eval = st.tabs(
+        ["🔮 예측하기", "🌾 작물별 환경 가이드", "📊 모델 평가·비교"])
     with tab_predict:
-        predict_ui(model, scaler, le)
+        predict_ui(model, scaler, le, prof_mean)
+    with tab_guide:
+        guide_ui(le, prof_mean, prof_min, prof_max)
     with tab_eval:
         eval_ui()
 

@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 
 import joblib
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,6 +23,8 @@ from ml.preprocess import prepare_data   # noqa: E402
 
 MODELS = ROOT / "models"
 MODELS.mkdir(exist_ok=True)
+CSV = ROOT / "data" / "Crop_recommendation.csv"
+FEATURES = ["N", "P", "K", "temperature", "humidity", "ph", "rainfall"]
 
 
 def main():
@@ -32,8 +35,18 @@ def main():
     model = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
     model.fit(X_train, y_train)
 
-    # 3. 묶어서 저장 — joblib.dump(객체, 경로)
-    bundle = {"model": model, "scaler": scaler, "le": le}
+    # 3. 작물별 환경 프로파일 (평균·최소·최대) — 데모 '환경 가이드'용
+    #    원본 CSV는 배포에 안 올리므로, 집계값만 묶음에 저장해서 같이 보냄
+    df = pd.read_csv(CSV)
+    prof_mean = df.groupby("label")[FEATURES].mean().round(1)
+    prof_min = df.groupby("label")[FEATURES].min().round(1)
+    prof_max = df.groupby("label")[FEATURES].max().round(1)
+
+    # 4. 묶어서 저장 — joblib.dump(객체, 경로)
+    bundle = {
+        "model": model, "scaler": scaler, "le": le,
+        "prof_mean": prof_mean, "prof_min": prof_min, "prof_max": prof_max,
+    }
     out = MODELS / "phase1_crop_rf.pkl"
     joblib.dump(bundle, out)
 
@@ -41,6 +54,7 @@ def main():
     print(f"  - model : {type(model).__name__} (트리 {model.n_estimators}그루)")
     print(f"  - scaler: {type(scaler).__name__}")
     print(f"  - le    : 작물 {len(le.classes_)}종")
+    print(f"  - 프로파일: 작물 {len(prof_mean)}종 × 피처 {len(FEATURES)}개 (평균·최소·최대)")
 
 
 if __name__ == "__main__":
