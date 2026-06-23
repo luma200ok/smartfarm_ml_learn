@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from common.labels_ko import FEATURE_KO, ko_crop   # noqa: E402
 
 MODEL_PATH = ROOT / "models" / "phase1_crop_rf.pkl"
-FIG = ROOT / "figures"   # 1-5~1-7에서 저장한 평가 그림들
+FIG = ROOT / "figures" / "phase1_ml"   # 1-5~1-7에서 저장한 평가 그림들
 
 # 슬라이더 범위 (데이터 min~max 기반) : (최소, 최대, 기본값)
 RANGES = {
