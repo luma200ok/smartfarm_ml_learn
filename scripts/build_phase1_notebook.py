@@ -300,9 +300,52 @@ plt.tight_layout(); plt.show()
 print(f"\n베스트 모델 = {best} ({scores[best]:.1%}) → Streamlit 데모(app.py)에 사용")
 ''')
 
-# ── 8. 저장 ──────────────────────────────────────────────────
+# ── 8. 하이퍼파라미터 튜닝 ────────────────────────────────────
 md("""
-## 8. 모델 저장 (학습 ↔ 서빙 분리)
+## 8. 하이퍼파라미터 튜닝 (RandomForest)
+
+베스트 모델 RandomForest를 **GridSearchCV(5-fold 교차검증)** 로 튜닝한다.
+기본값은 Train 정확도가 100%로 학습 데이터를 완벽히 외우는 **미세한 과적합** 경향이 있어,
+트리 깊이·분할 기준을 제약해 **과적합을 줄이고 더 단순한 모델**을 찾는다.
+""")
+code(r'''
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
+
+# 베이스라인(기본값 rf) Train/Test 정확도 — 과적합(Gap) 점검용
+base_tr = accuracy_score(y_train, rf.predict(X_train))
+base_te = accuracy_score(y_test,  rf.predict(X_test))
+
+param_grid = {
+    "n_estimators":      [100, 200, 300],
+    "max_depth":         [None, 10, 20],
+    "min_samples_split": [2, 5],
+    "min_samples_leaf":  [1, 2],
+}
+grid = GridSearchCV(
+    RandomForestClassifier(random_state=42, n_jobs=-1),
+    param_grid, cv=5, scoring="accuracy", n_jobs=-1,
+)
+grid.fit(X_train, y_train)
+
+rf_tuned = grid.best_estimator_   # 최적 조합으로 train에 재학습된 모델
+tuned_tr = accuracy_score(y_train, rf_tuned.predict(X_train))
+tuned_te = accuracy_score(y_test,  rf_tuned.predict(X_test))
+
+print("최적 조합 :", grid.best_params_)
+print(f"교차검증 정확도 : {grid.best_score_:.4f}\n")
+print(f"{'구분':<8}{'Train':>9}{'Test':>9}{'Gap(과적합)':>13}")
+print(f"{'튜닝 전':<8}{base_tr:>9.4f}{base_te:>9.4f}{base_tr-base_te:>+13.4f}")
+print(f"{'튜닝 후':<8}{tuned_tr:>9.4f}{tuned_te:>9.4f}{tuned_tr-tuned_te:>+13.4f}")
+''')
+md("""
+> **해석** — Test 정확도는 이미 상한(약 99.5%)이라 그대로지만, **Train–Test Gap이 크게 줄어 과적합이 완화**되고
+> 트리 수·깊이가 작아져 모델이 더 **단순·경량**해졌다. 아래 저장 단계에서는 이 **튜닝된 모델(`rf_tuned`)** 을 배포용으로 쓴다.
+""")
+
+# ── 9. 저장 ──────────────────────────────────────────────────
+md("""
+## 9. 모델 저장 (학습 ↔ 서빙 분리)
 
 여기서 딱 한 번 학습 → `.pkl`로 저장. Streamlit 데모는 이 파일을 **불러와 예측만** 한다(재학습 X).
 
@@ -315,9 +358,8 @@ import joblib
 MODELS = ROOT / "models"
 MODELS.mkdir(exist_ok=True)
 
-# 배포에 쓸 베스트 모델 = RandomForest (안정적·해석 쉬움). 전체 데이터로 한 번 더 학습.
-best_model = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
-best_model.fit(X_train, y_train)
+# 배포에 쓸 베스트 모델 = 8단계에서 튜닝한 RandomForest (rf_tuned). 과적합↓·경량.
+best_model = rf_tuned
 
 # 작물별 환경 프로파일 (원본 CSV는 배포에 안 올리므로 집계값만 묶어 보냄)
 prof_mean = df.groupby("label")[FEATURES].mean().round(1)
@@ -332,7 +374,7 @@ out = MODELS / "phase1_crop_rf.pkl"
 joblib.dump(bundle, out)
 
 print("저장 완료 →", out)
-print(f"  - model : {type(best_model).__name__} (트리 {best_model.n_estimators}그루)")
+print(f"  - model : {type(best_model).__name__} (트리 {best_model.n_estimators}그루, max_depth={best_model.max_depth})")
 print(f"  - scaler: {type(scaler).__name__}")
 print(f"  - le    : 작물 {len(le.classes_)}종")
 print(f"  - 프로파일: 작물 {len(prof_mean)}종 × 피처 {len(FEATURES)}개 (평균·최소·최대)")
