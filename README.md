@@ -8,7 +8,8 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E?logo=scikitlearn&logoColor=white)
 [![Streamlit](https://img.shields.io/badge/Streamlit-라이브_데모-FF4B4B?logo=streamlit&logoColor=white)](https://smartfarm-ai.streamlit.app/)
-![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료_99.5%25-2E7D32)
+![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료-2E7D32)
+![Accuracy](https://img.shields.io/badge/정확도-99.5%25-1565C0)
 
 > 🔗 **GitHub:** https://github.com/luma200ok/smartfarm-ai  
 > 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai.streamlit.app/
@@ -17,13 +18,14 @@
 
 ## 🔗 단계별 기록 & 라이브 데모
 
-| Phase | 한 일 | 상태 | 기록 | 라이브 데모 |
-|---|---|---|---|---|
-| **1 · ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료 · 99.5%** | [📄 phase1_ml.md](docs/phase1_ml.md) | [🚀 실행](https://smartfarm-ai.streamlit.app/) |
-| **2 · DL** | 잎 사진 병해충 진단 + 환경 시계열 (CNN·LSTM) | 🟡 계획 | [📄 phase2_dl.md](docs/phase2_dl.md) | — |
-| **3 · LLM** | 진단+환경 → 자연어 처방 + 알림 (Claude·RAG) | 🟡 계획 | [📄 phase3_llm.md](docs/phase3_llm.md) | — |
+| Phase | 한 일 | 상태 | 평가 지표 | 기록 | 라이브 데모 |
+|---|---|---|---|---|---|
+| **1 · ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료** | **정확도 99.5%** (+F1·혼동행렬) | [📄 phase1_ml.md](docs/phase1_ml.md) | [🚀 실행](https://smartfarm-ai.streamlit.app/) |
+| **2 · DL** | 잎 사진 병해충 진단 + 환경 시계열 (CNN·LSTM) | 🟡 계획 | 분류: 정확도·F1 / 시계열: RMSE·MAE | [📄 phase2_dl.md](docs/phase2_dl.md) | — |
+| **3 · LLM** | 진단+환경 → 자연어 처방 + 알림 (Claude·RAG) | 🟡 계획 | RAG 검색 정확도 + 정성 평가(사실성·유용성) | [📄 phase3_llm.md](docs/phase3_llm.md) | — |
 
 > 각 단계 .md = 문제 → 데이터 → 방법 → 결과 → 배운점 (포트폴리오 기록)
+> **평가 지표는 단계 성격에 따라 다름** — 분류(ML·DL)는 정확도, 시계열 예측(LSTM)은 오차(RMSE), 자연어 생성(LLM)은 정성 평가. "정확도 99.5%"는 Phase 1에만 해당.
 
 ---
 
