@@ -20,6 +20,7 @@ from common.labels_ko import FEATURE_KO, ko_crop   # noqa: E402
 
 MODEL_PATH = ROOT / "models" / "phase1_crop_rf.pkl"
 FIG = ROOT / "figures" / "phase1_ml"   # 1-5~1-7에서 저장한 평가 그림들
+REPORT_PATH = ROOT / "reports" / "phase1_eda_profile.html"   # YData Profiling 자동 EDA 리포트
 
 # 슬라이더 범위 (데이터 min~max 기반) : (최소, 최대, 기본값)
 RANGES = {
@@ -116,6 +117,18 @@ def eval_ui():
              caption="피처 중요도 — 강수량·습도가 작물 가르기에 핵심")
 
 
+def eda_report_ui():
+    """탭4 — YData Profiling 자동 EDA 리포트 (HTML 임베드)"""
+    st.subheader("📑 자동 EDA 리포트 (YData Profiling)")
+    st.caption("ydata-profiling으로 생성한 자동 EDA 리포트입니다. (요약통계·분포·상관·결측·품질경고)")
+    if REPORT_PATH.exists():
+        import streamlit.components.v1 as components
+        components.html(REPORT_PATH.read_text(encoding="utf-8"), height=900, scrolling=True)
+    else:
+        st.warning("리포트 파일이 없습니다. 아래 명령으로 먼저 생성하세요.")
+        st.code("python src/ml/profile_report.py", language="bash")
+
+
 def main():
     st.title("🌱 스마트팜 작물 추천")
     st.caption("토양·환경 값으로 적합 작물 추천 + 모델 평가 (RandomForest 99.5%)")
@@ -143,14 +156,16 @@ def main():
     model, scaler, le = bundle["model"], bundle["scaler"], bundle["le"]
     prof_mean, prof_min, prof_max = bundle["prof_mean"], bundle["prof_min"], bundle["prof_max"]
 
-    tab_predict, tab_guide, tab_eval = st.tabs(
-        ["🔮 예측하기", "🌾 작물별 환경 가이드", "📊 모델 평가·비교"])
+    tab_predict, tab_guide, tab_eval, tab_report = st.tabs(
+        ["🔮 예측하기", "🌾 작물별 환경 가이드", "📊 모델 평가·비교", "📑 자동 EDA 리포트"])
     with tab_predict:
         predict_ui(model, scaler, le, prof_mean)
     with tab_guide:
         guide_ui(le, prof_mean, prof_min, prof_max)
     with tab_eval:
         eval_ui()
+    with tab_report:
+        eda_report_ui()
 
 
 if __name__ == "__main__":

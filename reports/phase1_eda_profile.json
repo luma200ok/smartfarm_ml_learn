@@ -1,0 +1,129 @@
+{
+  "n_obs": 2200,
+  "n_var": 8,
+  "n_cells_missing": 0,
+  "p_cells_missing": 0.0,
+  "n_duplicates": 0,
+  "types": {
+    "Numeric": 7,
+    "Categorical": 1
+  },
+  "variables": {
+    "N": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 137.0,
+      "mean": 50.55,
+      "std": 36.92,
+      "min": 0.0,
+      "max": 140.0,
+      "5%": 4.0,
+      "25%": 21.0,
+      "50%": 37.0,
+      "75%": 84.25,
+      "95%": 116.0
+    },
+    "P": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 117.0,
+      "mean": 53.36,
+      "std": 32.99,
+      "min": 5.0,
+      "max": 145.0,
+      "5%": 10.0,
+      "25%": 28.0,
+      "50%": 51.0,
+      "75%": 68.0,
+      "95%": 133.0
+    },
+    "K": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 73.0,
+      "mean": 48.15,
+      "std": 50.65,
+      "min": 5.0,
+      "max": 205.0,
+      "5%": 15.0,
+      "25%": 20.0,
+      "50%": 32.0,
+      "75%": 49.0,
+      "95%": 199.0
+    },
+    "temperature": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 2200.0,
+      "mean": 25.62,
+      "std": 5.06,
+      "min": 8.83,
+      "max": 43.68,
+      "5%": 17.92,
+      "25%": 22.77,
+      "50%": 25.6,
+      "75%": 28.56,
+      "95%": 34.06
+    },
+    "humidity": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 2200.0,
+      "mean": 71.48,
+      "std": 22.26,
+      "min": 14.26,
+      "max": 99.98,
+      "5%": 19.37,
+      "25%": 60.26,
+      "50%": 80.47,
+      "75%": 89.95,
+      "95%": 94.37
+    },
+    "ph": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 2200.0,
+      "mean": 6.47,
+      "std": 0.77,
+      "min": 3.5,
+      "max": 9.94,
+      "5%": 5.44,
+      "25%": 5.97,
+      "50%": 6.43,
+      "75%": 6.92,
+      "95%": 7.75
+    },
+    "rainfall": {
+      "type": "Numeric",
+      "n_missing": 0.0,
+      "n_distinct": 2200.0,
+      "mean": 103.46,
+      "std": 54.96,
+      "min": 20.21,
+      "max": 298.56,
+      "5%": 33.82,
+      "25%": 64.55,
+      "50%": 94.87,
+      "75%": 124.27,
+      "95%": 209.54
+    },
+    "label": {
+      "type": "Categorical",
+      "n_missing": 0.0,
+      "n_distinct": 22.0
+    }
+  },
+  "alerts": [
+    "[K] is highly overall correlated with [label]",
+    "[P] is highly overall correlated with [label]",
+    "[humidity] is highly overall correlated with [label]",
+    "[label] is highly overall correlated with [K] and 3 other fields",
+    "[rainfall] is highly overall correlated with [label]",
+    "[label] is uniformly distributed",
+    "[temperature] has unique values",
+    "[humidity] has unique values",
+    "[ph] has unique values",
+    "[rainfall] has unique values",
+    "[N] has 27 (1.2%) zeros"
+  ]
+}

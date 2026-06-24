@@ -79,6 +79,13 @@ DATA → 전처리 → 모델링 → 예측 → USER INSIGHT
 ![작물별 강수량](../figures/phase1_rainfall_by_crop.png)
 - 작물마다 강수량이 뚜렷이 다름(muskmelon ~25 ↔ rice ~236) → **피처가 작물을 잘 가름** = 높은 정확도 기대.
 
+### 4.4 자동 EDA 프로파일링 (YData Profiling)
+![자동 탐지 경고 11건](../figures/phase1_ml/phase1_ydata_alerts.png)
+![상관관계 히트맵](../figures/phase1_ml/phase1_ydata_correlations.png)
+- `ydata-profiling`으로 자동 EDA 리포트를 생성해 수동 EDA(4.1~4.3) 결론을 **교차 검증**.
+- 자동 확인: 결측·중복 **0**, 22종 **균등 분포**, label ↔ (K·P·습도·강수량) 강한 연관, N 0값 27건(1.2%, 결측 아님).
+- 실행: `python src/ml/profile_report.py` → `reports/phase1_eda_profile.html` (Streamlit 앱 「📑 자동 EDA」 탭에서도 확인).
+
 ---
 
 ## 5. 데이터 전처리
