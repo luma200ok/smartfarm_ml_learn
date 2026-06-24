@@ -18,16 +18,11 @@
 
 ## ✨ 주요 기능
 
-<details>
-<summary><b>펼쳐 보기</b> — Phase 1 데모가 하는 일</summary>
-
 - 🔮 **작물 추천** — 토양·환경 7개 값 입력 → 적합 작물 22종 중 추천 + 신뢰도 Top3 + 추천 이유
 - 🌾 **작물별 환경 가이드** — 작물 선택 → 적합 환경값(평균·최소·최대) 표
 - 📊 **모델 평가·비교** — 3종 정확도 · 혼동행렬 · 피처 중요도 · VIF 시각화
 - 📑 **자동 EDA 리포트** — `ydata-profiling` 리포트 임베드
 - 🧠 **RandomForest 99.5%** — 교차검증(99.55%±0.25%)·GridSearchCV 튜닝 완료, 학습↔서빙 분리(`.pkl`)
-
-</details>
 
 ---
 
@@ -89,11 +84,19 @@ python src/ml/profile_report.py
 **데모 4개 탭:** 🔮 예측하기(슬라이더 입력 → 추천 작물 + 신뢰도 Top3 + 추천 이유) · 🌾 작물별 환경 가이드 · 📊 모델 평가·비교(혼동행렬·피처 중요도) · 📑 자동 EDA 리포트
 
 <details>
-<summary>📸 <b>데모 스크린샷 보기</b></summary>
+<summary>📸 <b>데모 스크린샷 보기 (탭 3종)</b></summary>
 
 <p align="center">
-  <img src="figures/phase1_ml/phase1_demo_tab1.png" width="72%" alt="Streamlit 데모 — 예측 탭" />
-  <br><sub>🔮 예측 탭 — 슬라이더로 토양·환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
+  <img src="figures/phase1_ml/phase1_demo_tab1.png" width="80%" alt="예측 탭" />
+  <br><sub>🔮 <b>탭1 · 예측하기</b> — 슬라이더로 토양·환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
+</p>
+<p align="center">
+  <img src="figures/phase1_ml/phase1_demo_tab2.png" width="80%" alt="작물별 환경 가이드 탭" />
+  <br><sub>🌾 <b>탭2 · 작물별 환경 가이드</b> — 작물 선택 → 적합 환경값(평균·최소·최대)</sub>
+</p>
+<p align="center">
+  <img src="figures/phase1_ml/phase1_demo_tab3.png" width="80%" alt="모델 평가·비교 탭" />
+  <br><sub>📊 <b>탭3 · 모델 평가·비교</b> — 3종 정확도 비교 + 평가 시각화</sub>
 </p>
 
 </details>
