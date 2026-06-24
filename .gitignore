@@ -29,3 +29,6 @@ docs/_local/
 
 # 환경변수 (Phase 3 API 키)
 .env
+
+# 브라우저 자동화(Playwright MCP) 잔여물
+.playwright-mcp/
