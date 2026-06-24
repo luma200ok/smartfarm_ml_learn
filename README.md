@@ -16,6 +16,21 @@
 
 ---
 
+## ✨ 주요 기능
+
+<details>
+<summary><b>펼쳐 보기</b> — Phase 1 데모가 하는 일</summary>
+
+- 🔮 **작물 추천** — 토양·환경 7개 값 입력 → 적합 작물 22종 중 추천 + 신뢰도 Top3 + 추천 이유
+- 🌾 **작물별 환경 가이드** — 작물 선택 → 적합 환경값(평균·최소·최대) 표
+- 📊 **모델 평가·비교** — 3종 정확도 · 혼동행렬 · 피처 중요도 · VIF 시각화
+- 📑 **자동 EDA 리포트** — `ydata-profiling` 리포트 임베드
+- 🧠 **RandomForest 99.5%** — 교차검증(99.55%±0.25%)·GridSearchCV 튜닝 완료, 학습↔서빙 분리(`.pkl`)
+
+</details>
+
+---
+
 ## 🔗 단계별 기록 & 라이브 데모
 
 | Phase | 한 일 | 상태 | 평가 지표 | 기록 | 라이브 데모 |
@@ -73,10 +88,15 @@ python src/ml/profile_report.py
 
 **데모 4개 탭:** 🔮 예측하기(슬라이더 입력 → 추천 작물 + 신뢰도 Top3 + 추천 이유) · 🌾 작물별 환경 가이드 · 📊 모델 평가·비교(혼동행렬·피처 중요도) · 📑 자동 EDA 리포트
 
+<details>
+<summary>📸 <b>데모 스크린샷 보기</b></summary>
+
 <p align="center">
   <img src="figures/phase1_ml/phase1_demo_tab1.png" width="72%" alt="Streamlit 데모 — 예측 탭" />
   <br><sub>🔮 예측 탭 — 슬라이더로 토양·환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
 </p>
+
+</details>
 
 > **학습 ↔ 서빙 분리:** 학습은 미리 1번(`notebooks/phase1_ml.ipynb` → `models/phase1_crop_rf.pkl`), 앱은 불러와 예측만(`transform`만, 재학습 없음).
 
@@ -134,3 +154,10 @@ smartfarm_ai/
 | **LLM (Phase 3, 계획)** | `Claude API` + RAG(농사로 재배가이드) · 텔레그램 알림 |
 
 > **자동 EDA:** `python src/ml/profile_report.py` → `reports/phase1_eda_profile.html` 생성. Streamlit 앱 「📑 자동 EDA 리포트」 탭에서도 확인.
+
+---
+
+## 📄 라이선스
+
+- **코드:** [MIT License](LICENSE) © 2026 정재봉
+- **데이터:** [Kaggle Crop Recommendation](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset) — 해당 페이지 라이선스 표기를 따름 (학습·포트폴리오용)
