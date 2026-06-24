@@ -10,7 +10,7 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-라이브_데모-FF4B4B?logo=streamlit&logoColor=white)](https://smartfarm-ai.streamlit.app/)
 ![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료_99.5%25-2E7D32)
 
-> 🔗 **GitHub:** https://github.com/luma200ok/smartfarm-ai
+> 🔗 **GitHub:** https://github.com/luma200ok/smartfarm-ai  
 > 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai.streamlit.app/
 
 ---
