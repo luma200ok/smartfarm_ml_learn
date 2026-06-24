@@ -2,7 +2,7 @@
 
 > 단계별 기록 (문제 → 데이터 → 방법 → 결과 → 배운점) · 상태: ⚪ 대기 (Phase 1 후)
 > 확정: 프레임워크 **PyTorch** · 작물 **토마토** · 비전 데이터 **PlantVillage**
-> ← [ml.md](ml.md) · [README 허브](../README.md) · 다음 → [llm.md](llm.md)
+> ← 이전 [phase1_ml.md](phase1_ml.md) · [README 허브](../README.md) · 다음 → [phase3_llm.md](phase3_llm.md)
 
 ---
 

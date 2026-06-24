@@ -2,7 +2,7 @@
 
 > 단계별 기록 (문제 → 데이터 → 방법 → 결과 → 배운점) · 상태: ⚪ 대기 (Phase 2 후)
 > 확정: LLM **Claude API** · 알림 **텔레그램** · RAG **농사로 재배가이드**
-> ← [dl.md](dl.md) · [README 허브](../README.md)
+> ← 이전 [phase2_dl.md](phase2_dl.md) · [README 허브](../README.md)
 
 ---
 
