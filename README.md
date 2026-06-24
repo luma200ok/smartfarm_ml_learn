@@ -7,10 +7,11 @@
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E?logo=scikitlearn&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-데모-FF4B4B?logo=streamlit&logoColor=white)
+[![Streamlit](https://img.shields.io/badge/Streamlit-라이브_데모-FF4B4B?logo=streamlit&logoColor=white)](https://smartfarm-ai.streamlit.app/)
 ![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료_99.5%25-2E7D32)
 
 > 🔗 **GitHub:** https://github.com/luma200ok/smartfarm-ai
+> 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai.streamlit.app/
 
 ---
 
@@ -18,7 +19,7 @@
 
 | Phase | 한 일 | 상태 | 기록 | 라이브 데모 |
 |---|---|---|---|---|
-| **1 · ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료 · 99.5%** | [📄 phase1_ml.md](docs/phase1_ml.md) | _(배포 후 링크)_ |
+| **1 · ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료 · 99.5%** | [📄 phase1_ml.md](docs/phase1_ml.md) | [🚀 실행](https://smartfarm-ai.streamlit.app/) |
 | **2 · DL** | 잎 사진 병해충 진단 + 환경 시계열 (CNN·LSTM) | 🟡 계획 | [📄 phase2_dl.md](docs/phase2_dl.md) | — |
 | **3 · LLM** | 진단+환경 → 자연어 처방 + 알림 (Claude·RAG) | 🟡 계획 | [📄 phase3_llm.md](docs/phase3_llm.md) | — |
 
@@ -119,6 +120,7 @@ smartfarm_ai/
 - [PRD](docs/prd.md) — 제품 기획서
 - [ML→DL→LLM 로드맵](docs/roadmap.md) — 단계별 기술 로드맵
 - [데이터 출처](docs/data_sources.md) — 단계별 데이터셋·URL 기록
+- [🔧 트러블슈팅 기록](docs/troubleshooting.md) — 배포까지 막혔던 지점·해결 (문제→원인→해결)
 
 ## 🛠️ Tech Stack
 
