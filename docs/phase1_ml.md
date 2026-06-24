@@ -71,12 +71,16 @@ DATA → 전처리 → 모델링 → 예측 → USER INSIGHT
 - label이 문자(object) → 인코딩 필요.
 
 ### 4.2 피처 분포 · 상관관계
-![분포](../figures/phase1_distributions.png)
-![상관관계](../figures/phase1_corr.png)
+![분포](../figures/phase1_ml/phase1_distributions.png)
+![상관관계](../figures/phase1_ml/phase1_corr.png)
 - 상관: **P–K = 0.74** (유일하게 뚜렷), 나머지 피처는 거의 독립 → 다중공선성 부담 낮음.
+- **VIF(분산팽창계수)로 정량 검증:** 7개 변수 전부 **5 미만**(최대 칼륨 2.80, 인 2.63) → 상관계수 결론과 일치, 다중공선성 안전 → **7개 변수 모두 유지**.
+
+![VIF](../figures/phase1_ml/phase1_vif.png)
+> 💡 **피처 중요도(6.3)와 다른 개념:** VIF는 *입력끼리 겹침*(다중공선성), 중요도는 *예측 기여도*. 예) 강수량은 중요도 1위지만 VIF는 최저(1.04) — 가장 중요하면서 가장 독립적.
 
 ### 4.3 작물별 강수량
-![작물별 강수량](../figures/phase1_rainfall_by_crop.png)
+![작물별 강수량](../figures/phase1_ml/phase1_rainfall_by_crop.png)
 - 작물마다 강수량이 뚜렷이 다름(muskmelon ~25 ↔ rice ~236) → **피처가 작물을 잘 가름** = 높은 정확도 기대.
 
 ### 4.4 자동 EDA 프로파일링 (YData Profiling)
@@ -106,7 +110,7 @@ LogisticRegression → RandomForest → XGBoost 순으로 학습, 동일 train/t
 | **RandomForest** | **99.5%** | 🏆 **베스트 — 데모 채택** |
 | XGBoost | 99.3% | 강력하나 근소 패 |
 
-![모델 비교](../figures/phase1_model_compare.png)
+![모델 비교](../figures/phase1_ml/phase1_model_compare.png)
 
 - **교훈:** 최신·강력 모델(XGBoost)이 항상 1등은 아니다. 데이터가 쉬우면(작물 환경이 뚜렷이 갈림) RandomForest로 이미 천장 → 실제 비교를 통해서만 알 수 있음.
 
@@ -114,11 +118,11 @@ LogisticRegression → RandomForest → XGBoost 순으로 학습, 동일 train/t
 - **정확도 99.5%** (440개 중 438개 정답, 오답 2개).
 - 약점이던 rice recall이 LogReg 0.80 → RF 0.95로 개선(환경 닮은 rice↔jute 분리).
 
-![혼동행렬](../figures/phase1_rf_confusion.png)
+![혼동행렬](../figures/phase1_ml/phase1_rf_confusion.png)
 - 혼동행렬: 대각선=정답. 대각선 밖 오답 거의 없음.
 
 ### 6.3 피처 중요도
-![피처 중요도](../figures/phase1_rf_importance.png)
+![피처 중요도](../figures/phase1_ml/phase1_rf_importance.png)
 - **강수량·습도가 1·2위** → "물 관련" 변수가 작물 가르기에 핵심. 4.3 EDA(작물별 강수량 뚜렷)와 정확히 일치.
 
 ---
