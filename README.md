@@ -45,6 +45,12 @@
 > **교훈:** 최신·강력 모델(XGBoost)이 항상 1등은 아니다. 데이터가 쉬우면(작물 환경이 뚜렷이 갈림) RandomForest로 이미 천장 → **실제 비교를 통해서만** 알 수 있다.
 > **핵심 피처:** 강수량·습도(물 관련 변수)가 작물 가르기의 1·2위 — EDA 결론과 정확히 일치.
 
+<p align="center">
+  <img src="figures/phase1_ml/phase1_model_compare.png" width="48%" alt="모델 3종 정확도 비교" />
+  <img src="figures/phase1_ml/phase1_rf_importance.png" width="48%" alt="RandomForest 피처 중요도" />
+</p>
+<p align="center"><sub>왼쪽 — 모델 3종 정확도 비교(RF 99.5% 베스트) · 오른쪽 — 피처 중요도(강수량·습도가 1·2위)</sub></p>
+
 📄 상세: [docs/phase1_ml.md](docs/phase1_ml.md) (수행내역서)
 
 ---
@@ -63,6 +69,11 @@ python src/ml/profile_report.py
 ```
 
 **데모 4개 탭:** 🔮 예측하기(슬라이더 입력 → 추천 작물 + 신뢰도 Top3 + 추천 이유) · 🌾 작물별 환경 가이드 · 📊 모델 평가·비교(혼동행렬·피처 중요도) · 📑 자동 EDA 리포트
+
+<p align="center">
+  <img src="figures/phase1_ml/phase1_demo_tab1.png" width="72%" alt="Streamlit 데모 — 예측 탭" />
+  <br><sub>🔮 예측 탭 — 슬라이더로 토양·환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
+</p>
 
 > **학습 ↔ 서빙 분리:** 학습은 미리 1번(`notebooks/phase1_ml.ipynb` → `models/phase1_crop_rf.pkl`), 앱은 불러와 예측만(`transform`만, 재학습 없음).
 
