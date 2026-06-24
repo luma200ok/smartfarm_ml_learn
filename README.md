@@ -16,6 +16,22 @@
 
 ---
 
+<a id="toc"></a>
+## 📑 목차
+
+1. [✨ 주요 기능](#features)
+2. [🏗️ 아키텍처 — 어떻게 물려 도는가](#architecture)
+3. [🔗 단계 현황](#status)
+4. [① Phase 1 · ML — 작물 추천](#phase1) ✅ **완료**
+5. [② Phase 2 · DL — 병해충 진단](#phase2) 🟡 계획
+6. [③ Phase 3 · LLM — 자연어 처방](#phase3) 🟡 계획
+7. [📂 프로젝트 구조](#structure)
+8. [🛠️ Tech Stack](#tech)
+9. [📑 문서 & 라이선스](#docs)
+
+---
+
+<a id="features"></a>
 ## ✨ 주요 기능
 
 - 🔮 **작물 추천** — 토양·환경 7개 값 입력 → 적합 작물 22종 중 추천 + 신뢰도 Top3 + 추천 이유
@@ -26,26 +42,43 @@
 
 ---
 
-## 🔗 단계별 기록 & 라이브 데모
+<a id="architecture"></a>
+## 🏗️ 아키텍처 — 어떻게 물려 도는가
 
-| Phase | 한 일 | 상태 | 평가 지표 | 기록 | 라이브 데모 |
-|---|---|---|---|---|---|
-| **1 · ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료** | **정확도 99.5%** (+F1·혼동행렬) | [📄 phase1_ml.md](docs/phase1_ml.md) | [🚀 실행](https://smartfarm-ai.streamlit.app/) |
-| **2 · DL** | 잎 사진 병해충 진단 + 환경 시계열 (CNN·LSTM) | 🟡 계획 | 분류: 정확도·F1 / 시계열: RMSE·MAE | [📄 phase2_dl.md](docs/phase2_dl.md) | — |
-| **3 · LLM** | 진단+환경 → 자연어 처방 + 알림 (Claude·RAG) | 🟡 계획 | RAG 검색 정확도 + 정성 평가(사실성·유용성) | [📄 phase3_llm.md](docs/phase3_llm.md) | — |
+```
+Phase 1 (ML)  센서/토양 → 작물 추천 분류 ───┐
+                                          ├→ models/ (공유)
+Phase 2 (DL)  잎 사진 → 병 진단 (CNN) ─────┤
+              환경 시퀀스 → 추세 (LSTM) ───┘
+                                          ↓ 진단·예측 결과를 먹음
+Phase 3 (LLM) DL진단 + 환경예측 + RAG → 자연어 처방 → 알림(텔레그램)
+```
 
-> 각 단계 .md = 문제 → 데이터 → 방법 → 결과 → 배운점 (포트폴리오 기록)
-> **평가 지표는 단계 성격에 따라 다름** — 분류(ML·DL)는 정확도, 시계열 예측(LSTM)은 오차(RMSE), 자연어 생성(LLM)은 정성 평가. "정확도 99.5%"는 Phase 1에만 해당.
+- **공유:** `data/`(원본) · `models/`(학습 산출물) · `src/common/`(유틸·한글 라벨)
+- **분리:** `src/{ml,dl,llm}`(단계 코드) · 단계별 Streamlit 진입점 → 개별 배포
 
 ---
 
-## ✅ Phase 1 (ML) — 결과 요약
+<a id="status"></a>
+## 🔗 단계 현황
+
+| Phase | 한 일 | 상태 | 평가 지표 |
+|---|---|---|---|
+| **① ML** | 정형 센서 → 작물 추천 분류 (sklearn) | ✅ **완료** | 정확도 **99.5%** (+F1·혼동행렬) |
+| **② DL** | 잎 사진 병해충 진단 + 환경 시계열 (CNN·LSTM) | 🟡 계획 | 분류: 정확도·F1 / 시계열: RMSE·MAE |
+| **③ LLM** | 진단+환경 → 자연어 처방 + 알림 (Claude·RAG) | 🟡 계획 | RAG 검색 정확도 + 정성 평가 |
+
+> **평가 지표는 단계 성격에 따라 다름** — 분류(ML·DL)는 정확도, 시계열(LSTM)은 오차(RMSE), 자연어 생성(LLM)은 정성 평가. "정확도 99.5%"는 Phase 1에만 해당.
+
+---
+
+<a id="phase1"></a>
+## ① Phase 1 · ML — 작물 추천 ✅
 
 **정형 토양·환경 데이터만으로 작물 22종을 99.5% 정확도로 추천**하는 분류 모델 + Streamlit 웹 데모.
 
 - **데이터:** Kaggle Crop Recommendation — 2,200행 × 8열 (작물 22종 × 100개, 완전 균형, 결측 0)
-- **입력(X):** 토양 N·P·K · 온도 · 습도 · pH · 강수량 (7개)  → **정답(y):** 적합 작물 22종
-- **파이프라인:** 수집 → EDA(수동 + `ydata-profiling` 자동) → 전처리(LabelEncoder·StandardScaler, **데이터 누수 방지**) → 모델 3종 비교 → 평가(Accuracy·정밀도·재현율·F1·혼동행렬) → Streamlit 데모
+- **입력(X):** 토양 N·P·K · 온도 · 습도 · pH · 강수량 (7개) → **정답(y):** 적합 작물 22종
 
 ### 모델 3종 비교 (공정 비교 후 베스트 선정)
 
@@ -55,20 +88,19 @@
 | **RandomForest** | **99.5%** | 🏆 **베스트 — 데모 채택 (GridSearchCV 튜닝)** |
 | XGBoost | 99.3% | 강력하나 근소 패 |
 
-> **교훈:** 최신·강력 모델(XGBoost)이 항상 1등은 아니다. 데이터가 쉬우면(작물 환경이 뚜렷이 갈림) RandomForest로 이미 천장 → **실제 비교를 통해서만** 알 수 있다.
-> **핵심 피처:** 강수량·습도(물 관련 변수)가 작물 가르기의 1·2위 — EDA 결론과 정확히 일치.
+> **교훈:** 최신·강력 모델(XGBoost)이 항상 1등은 아니다 — 데이터가 쉬우면 RandomForest로 이미 천장. **실제 비교를 통해서만** 알 수 있다.
+> **핵심 피처:** 강수량·습도(물 관련)가 작물 가르기의 1·2위 — EDA 결론과 정확히 일치.
 
 <p align="center">
   <img src="figures/phase1_ml/phase1_model_compare.png" width="48%" alt="모델 3종 정확도 비교" />
   <img src="figures/phase1_ml/phase1_rf_importance.png" width="48%" alt="RandomForest 피처 중요도" />
 </p>
-<p align="center"><sub>왼쪽 — 모델 3종 정확도 비교(RF 99.5% 베스트) · 오른쪽 — 피처 중요도(강수량·습도가 1·2위)</sub></p>
+<p align="center"><sub>왼쪽 — 모델 3종 정확도(RF 99.5% 베스트) · 오른쪽 — 피처 중요도(강수량·습도 1·2위)</sub></p>
 
-📄 상세: [docs/phase1_ml.md](docs/phase1_ml.md) (수행내역서)
+📄 **상세 수행내역서:** [docs/phase1_ml.md](docs/phase1_ml.md) — EDA·VIF·튜닝·평가 신뢰성 검증 전부 수록
 
----
-
-## 🚀 실행 (Phase 1 데모)
+<details>
+<summary>🚀 <b>실행 방법</b></summary>
 
 ```bash
 # 의존성 설치 (uv 권장)
@@ -81,14 +113,16 @@ streamlit run app.py
 python src/ml/profile_report.py
 ```
 
-**데모 4개 탭:** 🔮 예측하기(슬라이더 입력 → 추천 작물 + 신뢰도 Top3 + 추천 이유) · 🌾 작물별 환경 가이드 · 📊 모델 평가·비교(혼동행렬·피처 중요도) · 📑 자동 EDA 리포트
+> **학습 ↔ 서빙 분리:** 학습은 미리 1번(`notebooks/phase1_ml.ipynb` → `models/phase1_crop_rf.pkl`), 앱은 불러와 예측만(`transform`만, 재학습 없음).
+
+</details>
 
 <details>
-<summary>📸 <b>데모 스크린샷 보기 (탭 3종)</b></summary>
+<summary>📸 <b>데모 스크린샷 (탭 3종)</b></summary>
 
 <p align="center">
   <img src="figures/phase1_ml/phase1_demo_tab1.png" width="80%" alt="예측 탭" />
-  <br><sub>🔮 <b>탭1 · 예측하기</b> — 슬라이더로 토양·환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
+  <br><sub>🔮 <b>탭1 · 예측하기</b> — 슬라이더로 환경값 입력 → 추천 작물 + 신뢰도 Top3</sub>
 </p>
 <p align="center">
   <img src="figures/phase1_ml/phase1_demo_tab2.png" width="80%" alt="작물별 환경 가이드 탭" />
@@ -101,66 +135,92 @@ python src/ml/profile_report.py
 
 </details>
 
-> **학습 ↔ 서빙 분리:** 학습은 미리 1번(`notebooks/phase1_ml.ipynb` → `models/phase1_crop_rf.pkl`), 앱은 불러와 예측만(`transform`만, 재학습 없음).
+---
+
+<a id="phase2"></a>
+## ② Phase 2 · DL — 병해충 진단 🟡 계획
+
+> 잎 사진 → **CNN 병해충 진단** + 환경 시계열 **LSTM** 추세 예측. 정형 ML로 불가능한 새 능력(이미지·순서).
+
+<details>
+<summary>📋 <b>계획 요약</b></summary>
+
+- **확정:** PyTorch · 작물 토마토 · 비전 데이터 PlantVillage
+- **CNN:** 전이학습(ResNet/EfficientNet) → 질병 분류
+- **LSTM/GRU:** 지난 N시간 환경 시퀀스 → 향후 추세
+- **평가:** 분류 정확도·F1 / 시계열 RMSE·MAE
+
+</details>
+
+📄 상세 → [docs/phase2_dl.md](docs/phase2_dl.md)
 
 ---
 
-## 🏗️ 어떻게 물려 도는가
+<a id="phase3"></a>
+## ③ Phase 3 · LLM — 자연어 처방 🟡 계획
 
-```
-Phase 1 (ML)  센서/토양 → 작물 추천 분류 ───┐
-                                          ├→ models/ (공유)
-Phase 2 (DL)  잎 사진 → 병 진단 (CNN) ─────┤
-              환경 시퀀스 → 추세 (LSTM) ───┘
-                                          ↓ 진단·예측 결과를 먹음
-Phase 3 (LLM) DL진단 + 환경예측 + RAG → 자연어 처방 → 알림(텔레그램)
-```
+> CNN은 라벨("탄저병 87%")만 뱉음 → 진단+환경 예측을 받아 **사람 말로 처방**하고 **알림**까지. (Claude API + RAG)
 
-- **공유:** `data/`(원본), `models/`(학습 산출물), `src/common/`(유틸·한글 라벨)
-- **분리:** `src/{ml,dl,llm}`(단계 코드), 단계별 Streamlit 진입점 → 개별 배포
+<details>
+<summary>📋 <b>계획 요약</b></summary>
+
+- **확정:** LLM Claude API · 알림 텔레그램 · RAG 농사로 재배가이드
+- **입력:** Phase 2 CNN 진단 + Phase 1·2 환경 예측
+- **방법:** function calling으로 처방 생성 + RAG(재배 가이드 검색) 결합
+- **평가:** RAG 검색 정확도 + 정성 평가(사실성·유용성)
+
+</details>
+
+📄 상세 → [docs/phase3_llm.md](docs/phase3_llm.md)
 
 ---
 
-## 📂 구조
+<a id="structure"></a>
+## 📂 프로젝트 구조
+
+<details>
+<summary>디렉터리 트리 보기</summary>
 
 ```
 smartfarm_ai/
 ├─ README.md              ← (이 파일) 허브
-├─ app.py                 ← Phase 1 Streamlit 데모 (제출용 단일 진입점)
-├─ docs/                  ← PRD·로드맵 + 단계별 기록(phase1~3.md)
+├─ app.py                 ← Phase 1 Streamlit 데모 (단일 진입점)
+├─ docs/                  ← PRD·로드맵 + 단계별 기록(phase1~3.md)·트러블슈팅
 ├─ data/                  ← 공유 데이터 (git 제외, Kaggle 재다운)
 ├─ models/                ← 공유 학습 모델 (.pkl — 앱이 로드)
 ├─ notebooks/             ← phase1_ml.ipynb (탐색~모델저장 end-to-end)
 ├─ reports/               ← 자동 EDA 리포트 (ydata-profiling HTML/JSON)
-├─ figures/phase1_ml/     ← EDA·모델 평가 시각화 (혼동행렬·피처중요도 등)
+├─ figures/phase1_ml/     ← EDA·모델 평가 시각화
 ├─ src/{ml,dl,llm,common} ← 단계 코드 + 공유 유틸
 │   └─ ml/                  preprocess · train_{logreg,rf,xgb} · tune_rf · profile_report …
 └─ requirements.txt
 ```
 
+</details>
+
 ---
 
-## 📑 문서
-
-- [PRD](docs/prd.md) — 제품 기획서
-- [ML→DL→LLM 로드맵](docs/roadmap.md) — 단계별 기술 로드맵
-- [데이터 출처](docs/data_sources.md) — 단계별 데이터셋·URL 기록
-- [🔧 트러블슈팅 기록](docs/troubleshooting.md) — 배포까지 막혔던 지점·해결 (문제→원인→해결)
-
+<a id="tech"></a>
 ## 🛠️ Tech Stack
 
 | 영역 | 사용 기술 |
 |---|---|
 | **ML (Phase 1)** | `scikit-learn` · `xgboost` · `pandas`/`numpy` · `ydata-profiling`(자동 EDA) |
 | **시각화·데모** | `matplotlib`/`seaborn` · `Streamlit` |
-| **DL (Phase 2, 계획)** | `PyTorch` (CNN 전이학습 · LSTM), PlantVillage 데이터 |
+| **DL (Phase 2, 계획)** | `PyTorch` (CNN 전이학습 · LSTM) · PlantVillage |
 | **LLM (Phase 3, 계획)** | `Claude API` + RAG(농사로 재배가이드) · 텔레그램 알림 |
-
-> **자동 EDA:** `python src/ml/profile_report.py` → `reports/phase1_eda_profile.html` 생성. Streamlit 앱 「📑 자동 EDA 리포트」 탭에서도 확인.
 
 ---
 
-## 📄 라이선스
+<a id="docs"></a>
+## 📑 문서 & 라이선스
 
+**문서**
+- [PRD](docs/prd.md) — 제품 기획서 · [로드맵](docs/roadmap.md) — 단계별 기술 로드맵
+- [데이터 출처](docs/data_sources.md) · [🔧 트러블슈팅](docs/troubleshooting.md) — 배포까지 막혔던 지점·해결
+
+**라이선스**
 - **코드:** [MIT License](LICENSE) © 2026 luma200ok(정재봉)
-- **데이터:** [Kaggle Crop Recommendation](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset) — 해당 페이지 라이선스 표기를 따름 (학습·포트폴리오용)
+- **데이터:** [Kaggle Crop Recommendation](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset) — 해당 페이지 표기를 따름 (학습·포트폴리오용)
+
+<sub>[⬆ 목차로](#toc)</sub>
