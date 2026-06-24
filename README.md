@@ -159,5 +159,5 @@ smartfarm_ai/
 
 ## 📄 라이선스
 
-- **코드:** [MIT License](LICENSE) © 2026 정재봉
+- **코드:** [MIT License](LICENSE) © 2026 luma200ok(정재봉)
 - **데이터:** [Kaggle Crop Recommendation](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset) — 해당 페이지 라이선스 표기를 따름 (학습·포트폴리오용)
