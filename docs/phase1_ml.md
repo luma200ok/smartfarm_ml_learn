@@ -51,12 +51,18 @@ DATA → 전처리 → 모델링 → 예측 → USER INSIGHT
 - 규모: **2,200행 × 8열** (작물 22종 × 각 100개, 완전 균형).
 
 ### 3.2 변수 구성
-| 구분 | 변수 | 설명 |
-|---|---|---|
-| 입력(X) | N, P, K | 토양 질소·인·칼륨 |
-| 입력(X) | temperature, humidity | 온도(℃), 습도(%) |
-| 입력(X) | ph, rainfall | 산도, 강수량(mm) |
-| 정답(y) | label | 적합 작물 22종 (rice, maize, … coffee) |
+입력 **7개**(수치형) + 정답 **1개**(범주형) = 8열.
+
+| 구분 | 변수 | 설명 | 범위 |
+|---|---|---|---|
+| 입력(X) | N | 토양 질소 | 0 ~ 140 |
+| 입력(X) | P | 토양 인 | 5 ~ 145 |
+| 입력(X) | K | 토양 칼륨 | 5 ~ 205 |
+| 입력(X) | temperature | 평균 온도(℃) | 8.8 ~ 43.7 |
+| 입력(X) | humidity | 상대 습도(%) | 14.3 ~ 100.0 |
+| 입력(X) | ph | 토양 산도 | 3.5 ~ 9.9 |
+| 입력(X) | rainfall | 강수량(mm) | 20.2 ~ 298.6 |
+| 정답(y) | label | 적합 작물 | 22종 (rice, maize, … coffee) |
 
 ### 3.3 판단 결과(종속변수)
 - 작물 22종 분류 (다중 분류). 예: rice(벼), maize(옥수수), cotton(목화), coffee(커피) 등.
@@ -163,15 +169,26 @@ LogisticRegression → RandomForest → XGBoost 순으로 학습, 동일 train/t
 
 ## 7. 프로토타이핑 (Streamlit)
 
-`app/phase1_ml.py` — 학습된 모델(`models/phase1_crop_rf.pkl`)을 불러와 예측 서비스.
+`app.py` — 학습된 모델(`models/phase1_crop_rf.pkl`)을 불러와 예측 서비스 (4개 탭).
 
 | 탭 | 기능 |
 |---|---|
-| 🔮 예측하기 | 슬라이더 7개로 환경값 입력 → 추천 작물 + 신뢰도 Top3 |
+| 🔮 예측하기 | 슬라이더 7개로 환경값 입력 → 추천 작물 + 신뢰도 Top3 + 추천 이유 |
+| 🌾 작물별 환경 가이드 | 작물 선택 → 적합 환경값(평균·최소·최대) 표 |
 | 📊 모델 평가·비교 | 정확도 비교표 · 혼동행렬 · 피처 중요도 시각화 |
+| 📑 자동 EDA 리포트 | `ydata-profiling` 리포트 임베드 |
+
+![예측 탭](../figures/phase1_ml/phase1_demo_tab1.png)
+*🔮 탭1 · 예측하기 — 환경값 입력 → 추천 작물 + 신뢰도 Top3*
+
+![작물별 환경 가이드 탭](../figures/phase1_ml/phase1_demo_tab2.png)
+*🌾 탭2 · 작물별 환경 가이드 — 작물 선택 → 적합 환경값(평균·최소·최대)*
+
+![모델 평가·비교 탭](../figures/phase1_ml/phase1_demo_tab3.png)
+*📊 탭3 · 모델 평가·비교 — 3종 정확도 + 평가 시각화*
 
 - **학습 ↔ 서빙 분리:** 학습은 미리 1번(→.pkl), 앱은 불러와 예측만(`transform`만, 재학습 X).
-- 실행: `streamlit run app/phase1_ml.py`
+- 실행: `streamlit run app.py`
 - 🔗 라이브 데모: https://smartfarm-ai.streamlit.app/ (Streamlit Community Cloud 배포)
 
 ---
