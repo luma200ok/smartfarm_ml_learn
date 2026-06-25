@@ -189,7 +189,7 @@ LogisticRegression → RandomForest → XGBoost 순으로 학습, 동일 train/t
 
 - **학습 ↔ 서빙 분리:** 학습은 미리 1번(→.pkl), 앱은 불러와 예측만(`transform`만, 재학습 X).
 - 실행: `streamlit run app.py`
-- 🔗 라이브 데모: https://smartfarm-ai.streamlit.app/ (Streamlit Community Cloud 배포)
+- 🔗 라이브 데모: https://smartfarm-ai-learn.streamlit.app/ (Streamlit Community Cloud 배포)
 
 ---
 

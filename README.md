@@ -7,12 +7,12 @@
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E?logo=scikitlearn&logoColor=white)
-[![Streamlit](https://img.shields.io/badge/Streamlit-라이브_데모-FF4B4B?logo=streamlit&logoColor=white)](https://smartfarm-ai.streamlit.app/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-라이브_데모-FF4B4B?logo=streamlit&logoColor=white)](https://smartfarm-ai-learn.streamlit.app/)
 ![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료-2E7D32)
 ![Accuracy](https://img.shields.io/badge/정확도-99.5%25-1565C0)
 
 > 🔗 **GitHub:** https://github.com/luma200ok/smartfarm_ml_learn  
-> 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai.streamlit.app/
+> 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai-learn.streamlit.app/
 
 ---
 
