@@ -9,7 +9,7 @@
 | 담당자 | （작성자） |
 | 작성일 | 2026-06-21 |
 | 산출물 | 분류 모델(RandomForest, 정확도 99.5%) · Streamlit 데모 · 본 보고서 |
-| 코드 | https://github.com/luma200ok/smartfarm-ai |
+| 코드 | https://github.com/luma200ok/smartfarm_ml_learn |
 
 ← [README 허브](../README.md) · 다음 → [phase2_dl.md](phase2_dl.md)
 

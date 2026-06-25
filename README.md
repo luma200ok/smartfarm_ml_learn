@@ -1,6 +1,6 @@
 # 🌱 SmartFarm AI — ML 입문 (v1 · 노지 작물 추천)
 
-> 📦 **이 레포는 ML 입문 단계(v1)입니다.** 스마트팜 특화 본편(잎 진단 DL · 처방 LLM · 다작물)은 → **[smartfarm-ai](https://github.com/luma200ok/smartfarm-ml-learn)**
+> 📦 **이 레포는 ML 입문 단계(v1)입니다.** 스마트팜 특화 본편(잎 진단 DL · 처방 LLM · 다작물)은 → **[smartfarm_ai](https://github.com/luma200ok/smartfarm_ai)**
 >
 > 센서는 *환경 숫자*를 보여주지만, 이 AI는 *작물에 지금 뭘 해줘야 하는지*를 알려준다.
 > Kaggle Crop Recommendation으로 **정형 ML(작물 추천)** 을 학습한 단계 — 범용 ML 입문 후, 본편에서 **국내 스마트팜 실데이터로 발전**한다.
@@ -11,7 +11,7 @@
 ![Phase 1](https://img.shields.io/badge/Phase_1_ML-완료-2E7D32)
 ![Accuracy](https://img.shields.io/badge/정확도-99.5%25-1565C0)
 
-> 🔗 **GitHub:** https://github.com/luma200ok/smartfarm-ml-learn  
+> 🔗 **GitHub:** https://github.com/luma200ok/smartfarm_ml_learn  
 > 🚀 **라이브 데모(Phase 1):** https://smartfarm-ai.streamlit.app/
 
 ---
